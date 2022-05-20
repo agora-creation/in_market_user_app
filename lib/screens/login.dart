@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:in_market_user_app/helpers/functions.dart';
+import 'package:in_market_user_app/screens/regist.dart';
+import 'package:in_market_user_app/widgets/custom_text_form_field.dart';
+import 'package:in_market_user_app/widgets/link_button.dart';
+import 'package:in_market_user_app/widgets/login_title.dart';
+import 'package:in_market_user_app/widgets/round_lg_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -9,8 +15,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,26 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 children: [
                   const SizedBox(height: 80),
-                  Column(
-                    children: const [
-                      Text(
-                        'InMarket',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'SourceHanSans-Bold',
-                        ),
-                      ),
-                      Text(
-                        '- 買う人用 -',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                    ],
-                  ),
+                  const LoginTitle(),
                   const SizedBox(height: 60),
                   Column(
                     children: [
@@ -61,127 +48,40 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      TextFormField(
-                        controller: email,
-                        obscureText: false,
-                        keyboardType: TextInputType.name,
-                        maxLines: 1,
-                        style: const TextStyle(
-                          color: Colors.black54,
-                          fontSize: 14,
-                        ),
-                        cursorColor: Colors.white,
-                        decoration: InputDecoration(
-                          labelText: 'メールアドレス',
-                          fillColor: Colors.white,
-                          prefixIcon: const Icon(
-                            Icons.email,
-                            size: 18,
-                            color: Colors.black54,
-                          ),
-                          filled: true,
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide.none,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide.none,
-                          ),
-                          labelStyle: const TextStyle(color: Colors.black54),
-                          focusColor: Colors.black54,
-                        ),
+                      CustomTextFormField(
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        labelText: 'メールアドレス',
+                        iconData: Icons.email,
                       ),
                       const SizedBox(height: 16),
-                      TextFormField(
-                        controller: password,
-                        obscureText: false,
-                        keyboardType: TextInputType.name,
-                        maxLines: 1,
-                        style: const TextStyle(
-                          color: Colors.black54,
-                          fontSize: 14,
-                        ),
-                        cursorColor: Colors.white,
-                        decoration: InputDecoration(
-                          labelText: 'パスワード',
-                          fillColor: Colors.white,
-                          prefixIcon: const Icon(
-                            Icons.lock,
-                            size: 18,
-                            color: Colors.black54,
-                          ),
-                          filled: true,
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide.none,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide.none,
-                          ),
-                          labelStyle: const TextStyle(color: Colors.black54),
-                          focusColor: Colors.black54,
-                        ),
+                      CustomTextFormField(
+                        controller: passwordController,
+                        obscureText: true,
+                        keyboardType: TextInputType.visiblePassword,
+                        labelText: 'パスワード',
+                        iconData: Icons.lock,
                       ),
                       const SizedBox(height: 16),
-                      SizedBox(
-                        width: double.infinity,
-                        child: TextButton(
-                          onPressed: () {},
-                          style: TextButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            shape: const StadiumBorder(),
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                          ),
-                          child: const Text(
-                            'ログイン',
-                            style: TextStyle(
-                              color: Colors.black54,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'SourceHanSans-Bold',
-                            ),
-                          ),
-                        ),
+                      RoundLgButton(
+                        labelText: 'ログイン',
+                        labelColor: Colors.black54,
+                        backgroundColor: Colors.white,
+                        onPressed: () {},
                       ),
+                      const SizedBox(height: 60),
+                      LinkButton(
+                        labelText: '新規登録の場合はココをタップ！',
+                        onTap: () {
+                          nextScreen(context, const RegistScreen());
+                        },
+                      ),
+                      const SizedBox(height: 60),
                     ],
                   ),
                 ],
               ),
             ),
-            // child: Center(
-            //   child: Column(
-            //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //     children: [
-            //       Column(
-            //         mainAxisAlignment: MainAxisAlignment.center,
-            //         children: const [
-            //           Text(
-            //             'InMarket',
-            //             style: TextStyle(
-            //               color: Colors.white,
-            //               fontSize: 32,
-            //               fontWeight: FontWeight.bold,
-            //               fontFamily: 'SourceHanSans-Bold',
-            //             ),
-            //           ),
-            //           Text(
-            //             '- 買う人用 -',
-            //             style: TextStyle(
-            //               color: Colors.white,
-            //               fontSize: 16.0,
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //       const SpinKitPouringHourGlass(
-            //         color: Colors.white,
-            //         size: 40,
-            //       )
-            //     ],
-            //   ),
-            // ),
           ),
         ),
       ),

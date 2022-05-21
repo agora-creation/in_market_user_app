@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:in_market_user_app/helpers/style.dart';
 import 'package:in_market_user_app/widgets/custom_text_form_field.dart';
 import 'package:in_market_user_app/widgets/icon_label.dart';
 import 'package:in_market_user_app/widgets/link_button.dart';
@@ -31,9 +32,7 @@ class _RegistScreenState extends State<RegistScreen> {
           onTap: () => FocusScope.of(context).unfocus(),
           child: Container(
             height: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.red.shade400,
-            ),
+            decoration: loginDecoration,
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -46,10 +45,7 @@ class _RegistScreenState extends State<RegistScreen> {
                     children: [
                       const Text(
                         '登録がお済みでない方は新規登録してください',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14.0,
-                        ),
+                        style: loginMessageStyle,
                       ),
                       const SizedBox(height: 16),
                       const IconLabel(

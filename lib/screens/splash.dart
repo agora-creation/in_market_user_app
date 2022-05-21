@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:in_market_user_app/helpers/functions.dart';
+import 'package:in_market_user_app/helpers/style.dart';
 import 'package:in_market_user_app/screens/login.dart';
 import 'package:in_market_user_app/widgets/loading.dart';
 import 'package:in_market_user_app/widgets/login_title.dart';
@@ -36,9 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
           onTap: () => FocusScope.of(context).unfocus(),
           child: Container(
             height: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.red.shade400,
-            ),
+            decoration: loginDecoration,
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,

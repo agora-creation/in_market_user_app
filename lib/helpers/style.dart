@@ -23,3 +23,12 @@ ThemeData theme() {
     visualDensity: VisualDensity.adaptivePlatformDensity,
   );
 }
+
+const BoxDecoration loginDecoration = BoxDecoration(
+  color: Color(0xFFEF5350),
+);
+
+const TextStyle loginMessageStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 14.0,
+);

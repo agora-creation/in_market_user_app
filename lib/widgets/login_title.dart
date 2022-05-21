@@ -15,6 +15,7 @@ class LoginTitle extends StatelessWidget {
             fontSize: 32,
             fontWeight: FontWeight.bold,
             fontFamily: 'SourceHanSans-Bold',
+            letterSpacing: 1,
           ),
         ),
         Text(

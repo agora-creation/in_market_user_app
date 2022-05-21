@@ -2,26 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:in_market_user_app/helpers/functions.dart';
 import 'package:in_market_user_app/helpers/style.dart';
+import 'package:in_market_user_app/providers/auth.dart';
 import 'package:in_market_user_app/screens/regist.dart';
 import 'package:in_market_user_app/widgets/custom_text_form_field.dart';
 import 'package:in_market_user_app/widgets/error_dialog.dart';
 import 'package:in_market_user_app/widgets/link_button.dart';
 import 'package:in_market_user_app/widgets/login_title.dart';
 import 'package:in_market_user_app/widgets/round_lg_button.dart';
+import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
-  @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
@@ -46,14 +42,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 16),
                       CustomTextFormField(
-                        controller: emailController,
+                        controller: authProvider.emailController,
                         keyboardType: TextInputType.emailAddress,
                         labelText: 'メールアドレス',
                         iconData: Icons.email,
                       ),
                       const SizedBox(height: 16),
                       CustomTextFormField(
-                        controller: passwordController,
+                        controller: authProvider.passwordController,
                         obscureText: true,
                         keyboardType: TextInputType.visiblePassword,
                         labelText: 'パスワード',
@@ -64,13 +60,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: 'ログイン',
                         labelColor: Colors.black54,
                         backgroundColor: Colors.white,
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (_) => const ErrorDialog(
-                              message: 'ログインに失敗しました。',
-                            ),
-                          );
+                        onPressed: () async {
+                          String? errorText = await authProvider.loginCheck();
+                          if (errorText != null) {
+                            showDialog(
+                              context: context,
+                              builder: (_) => ErrorDialog(
+                                message: errorText,
+                              ),
+                            );
+                            return;
+                          }
+                          authProvider.clearController();
                         },
                       ),
                       const SizedBox(height: 60),

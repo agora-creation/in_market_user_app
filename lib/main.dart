@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:in_market_user_app/helpers/style.dart';
 import 'package:in_market_user_app/providers/auth.dart';
+import 'package:in_market_user_app/screens/home.dart';
+import 'package:in_market_user_app/screens/login.dart';
 import 'package:in_market_user_app/screens/splash.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: AuthProvider()),
+        ChangeNotifierProvider.value(value: AuthProvider.initialize()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -36,8 +38,28 @@ class MyApp extends StatelessWidget {
         locale: const Locale('ja'),
         title: 'InMarket(買う人用)',
         theme: theme(),
-        home: const SplashScreen(),
+        home: const SplashController(),
       ),
     );
+  }
+}
+
+class SplashController extends StatelessWidget {
+  const SplashController({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+    switch (authProvider.status) {
+      case Status.uninitialized:
+        return const SplashScreen();
+      case Status.unauthenticated:
+      case Status.authenticating:
+        return const LoginScreen();
+      case Status.authenticated:
+        return const HomeScreen();
+      default:
+        return const LoginScreen();
+    }
   }
 }

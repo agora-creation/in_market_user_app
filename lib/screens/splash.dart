@@ -1,32 +1,11 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:in_market_user_app/helpers/functions.dart';
 import 'package:in_market_user_app/helpers/style.dart';
-import 'package:in_market_user_app/screens/login.dart';
 import 'package:in_market_user_app/widgets/loading.dart';
 import 'package:in_market_user_app/widgets/login_title.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
-
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  void _init() {
-    Timer(const Duration(seconds: 3), () {
-      changeScreen(context, const LoginScreen());
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _init();
-  }
 
   @override
   Widget build(BuildContext context) {

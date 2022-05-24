@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:in_market_user_app/helpers/functions.dart';
 import 'package:in_market_user_app/helpers/style.dart';
 import 'package:in_market_user_app/providers/auth.dart';
+import 'package:in_market_user_app/screens/home.dart';
 import 'package:in_market_user_app/screens/regist.dart';
 import 'package:in_market_user_app/widgets/custom_text_form_field.dart';
 import 'package:in_market_user_app/widgets/error_dialog.dart';
@@ -11,9 +12,14 @@ import 'package:in_market_user_app/widgets/login_title.dart';
 import 'package:in_market_user_app/widgets/round_lg_button.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -61,7 +67,7 @@ class LoginScreen extends StatelessWidget {
                         labelColor: Colors.black54,
                         backgroundColor: Colors.white,
                         onPressed: () async {
-                          String? errorText = await authProvider.loginCheck();
+                          String? errorText = await authProvider.login();
                           if (errorText != null) {
                             showDialog(
                               context: context,
@@ -72,6 +78,8 @@ class LoginScreen extends StatelessWidget {
                             return;
                           }
                           authProvider.clearController();
+                          if (!mounted) return;
+                          changeScreen(context, const HomeScreen());
                         },
                       ),
                       const SizedBox(height: 60),

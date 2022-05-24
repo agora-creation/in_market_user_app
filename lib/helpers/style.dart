@@ -9,7 +9,7 @@ ThemeData theme() {
       color: Color(0xFFFEFFFA),
       elevation: 5.0,
       centerTitle: false,
-      systemOverlayStyle: SystemUiOverlayStyle.light,
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
       titleTextStyle: TextStyle(
         color: Colors.black54,
         fontSize: 18.0,

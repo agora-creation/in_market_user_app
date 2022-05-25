@@ -3,16 +3,18 @@ import 'package:flutter/services.dart';
 
 ThemeData theme() {
   return ThemeData(
-    scaffoldBackgroundColor: const Color(0xFFFEFFFA),
+    scaffoldBackgroundColor: Colors.red.shade200,
     fontFamily: 'SourceHanSans-Regular',
     appBarTheme: const AppBarTheme(
-      color: Color(0xFFFEFFFA),
-      elevation: 5.0,
+      color: Colors.white,
+      elevation: 0,
       centerTitle: false,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       titleTextStyle: TextStyle(
         color: Colors.black54,
         fontSize: 18.0,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'SourceHanSans-Bold',
       ),
       iconTheme: IconThemeData(color: Colors.black54),
     ),

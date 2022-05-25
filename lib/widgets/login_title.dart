@@ -12,17 +12,17 @@ class LoginTitle extends StatelessWidget {
           'InMarket',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 32,
+            fontSize: 34,
             fontWeight: FontWeight.bold,
             fontFamily: 'SourceHanSans-Bold',
             letterSpacing: 1,
           ),
         ),
         Text(
-          '- 買う人用 -',
+          '- 注文者用 -',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 16.0,
+            fontSize: 18.0,
           ),
         ),
       ],

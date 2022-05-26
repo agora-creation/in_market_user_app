@@ -5,9 +5,13 @@ class ItemsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Map> shopItems =
-        List.generate(100000, (index) => {'id': index, 'name': '商品 $index'})
-            .toList();
+    final List<Map> shopItems = List.generate(
+        100000,
+        (index) => {
+              'id': index,
+              'name': '商品 $index',
+              'image': 'https://placehold.jp/300x300.png',
+            }).toList();
 
     return GridView.builder(
       padding: const EdgeInsets.all(8),
@@ -19,18 +23,20 @@ class ItemsScreen extends StatelessWidget {
       itemCount: shopItems.length,
       itemBuilder: (_, index) {
         return Card(
-          elevation: 0,
-          child: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(
-                  'https://hirome-sc.com/system/asset/item-images/0000000000101_1.jpg',
-                ),
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.topCenter,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Image.network(
+                '${shopItems[index]['image']}',
+                fit: BoxFit.cover,
               ),
-            ),
-            child: Text('${shopItems[index]['name']}'),
+              Expanded(
+                child: ListTile(
+                  title: Text('${shopItems[index]['name']}'),
+                  subtitle: Text('${shopItems[index]['name']}'),
+                ),
+              ),
+            ],
           ),
         );
       },

@@ -7,6 +7,7 @@ class UserModel {
   String _password = '';
   String _name = '';
   List<AddressModel> addressList = [];
+  String _shopId = '';
   String _token = '';
   DateTime _createdAt = DateTime.now();
 
@@ -14,6 +15,7 @@ class UserModel {
   String get email => _email;
   String get password => _password;
   String get name => _name;
+  String get shopId => _shopId;
   String get token => _token;
   DateTime get createdAt => _createdAt;
 
@@ -23,6 +25,7 @@ class UserModel {
     _password = snapshot.data()!['password'] ?? '';
     _name = snapshot.data()!['name'] ?? '';
     addressList = _convertList(snapshot.data()!['addressList']);
+    _shopId = snapshot.data()!['shopId'] ?? '';
     _token = snapshot.data()!['token'] ?? '';
     _createdAt = snapshot.data()!['createdAt'].toDate() ?? DateTime.now();
   }

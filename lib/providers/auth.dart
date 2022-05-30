@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:in_market_user_app/helpers/functions.dart';
+import 'package:in_market_user_app/models/shop.dart';
 import 'package:in_market_user_app/models/user.dart';
+import 'package:in_market_user_app/services/shop.dart';
 import 'package:in_market_user_app/services/user.dart';
 
 enum Status { authenticated, uninitialized, authenticating, unauthenticated }
@@ -12,8 +14,11 @@ class AuthProvider with ChangeNotifier {
   FirebaseAuth? auth;
   User? _fUser;
   UserService userService = UserService();
+  ShopService shopService = ShopService();
   UserModel? _user;
   UserModel? get user => _user;
+  ShopModel? _currentShop;
+  ShopModel? get currentShop => _currentShop;
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -26,6 +31,11 @@ class AuthProvider with ChangeNotifier {
   void clearController() {
     emailController.text = '';
     passwordController.text = '';
+    rePasswordController.text = '';
+    nameController.text = '';
+    zipController.text = '';
+    addressController.text = '';
+    telController.text = '';
   }
 
   AuthProvider.initialize() : auth = FirebaseAuth.instance {
@@ -99,6 +109,7 @@ class AuthProvider with ChangeNotifier {
     await auth?.signOut();
     _status = Status.unauthenticated;
     _user = null;
+    _currentShop = null;
     await removePrefs('userId');
     notifyListeners();
     return Future.delayed(Duration.zero);
@@ -106,6 +117,9 @@ class AuthProvider with ChangeNotifier {
 
   Future reloadUser() async {
     _user = await userService.select(id: _fUser?.uid);
+    if (_user?.shopId != '') {
+      _currentShop = await shopService.select(id: _user?.shopId);
+    }
     notifyListeners();
   }
 
@@ -116,7 +130,30 @@ class AuthProvider with ChangeNotifier {
       _fUser = firebaseUser;
       _status = Status.authenticated;
       _user = await userService.select(id: _fUser?.uid);
+      if (_user?.shopId != '') {
+        _currentShop = await shopService.select(id: _user?.shopId);
+      }
     }
     notifyListeners();
+  }
+
+  Future<List<ShopModel>> selectShops() async {
+    return await shopService.selectList();
+  }
+
+  Future<String?> updateShop({ShopModel? shop}) async {
+    String? errorText;
+    if (shop == null) errorText = '店舗の選択に失敗しました。';
+    try {
+      userService.update({
+        'id': user?.id,
+        'shopId': shop?.id,
+      });
+      _currentShop = shop;
+    } catch (e) {
+      errorText = '店舗の選択に失敗しました。';
+    }
+    notifyListeners();
+    return errorText;
   }
 }

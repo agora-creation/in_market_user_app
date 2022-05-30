@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:in_market_user_app/helpers/style.dart';
 import 'package:in_market_user_app/providers/auth.dart';
+import 'package:in_market_user_app/providers/item.dart';
 import 'package:in_market_user_app/screens/home.dart';
 import 'package:in_market_user_app/screens/login.dart';
 import 'package:in_market_user_app/screens/splash.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: AuthProvider.initialize()),
+        ChangeNotifierProvider.value(value: ItemProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -36,7 +38,7 @@ class MyApp extends StatelessWidget {
         ],
         supportedLocales: const [Locale('ja')],
         locale: const Locale('ja'),
-        title: 'InMarket(買う人用)',
+        title: 'InMarket(注文者用)',
         theme: theme(),
         home: const SplashController(),
       ),

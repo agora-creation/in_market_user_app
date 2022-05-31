@@ -156,4 +156,19 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
     return errorText;
   }
+
+  Future<String?> deleteShop() async {
+    String? errorText;
+    try {
+      userService.update({
+        'id': user?.id,
+        'shopId': '',
+      });
+      _currentShop = null;
+    } catch (e) {
+      errorText = '店舗の選択に失敗しました。';
+    }
+    notifyListeners();
+    return errorText;
+  }
 }

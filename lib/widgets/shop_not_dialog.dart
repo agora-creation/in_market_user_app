@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:in_market_user_app/widgets/custom_text_button.dart';
 
-class NotShopDialog extends StatelessWidget {
-  const NotShopDialog({Key? key}) : super(key: key);
+class ShopNotDialog extends StatelessWidget {
+  const ShopNotDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

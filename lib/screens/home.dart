@@ -9,7 +9,6 @@ import 'package:in_market_user_app/screens/items.dart';
 import 'package:in_market_user_app/screens/user.dart';
 import 'package:in_market_user_app/widgets/custom_bottom_navigation_bar.dart';
 import 'package:in_market_user_app/widgets/home_title.dart';
-import 'package:in_market_user_app/widgets/shop_select_dialog.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -37,15 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: HomeTitle(
+          authProvider: authProvider,
           shop: shop,
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (_) => ShopSelectDialog(
-                authProvider: authProvider,
-              ),
-            );
-          },
         ),
         actions: [
           IconButton(

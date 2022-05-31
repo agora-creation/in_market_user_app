@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:in_market_user_app/providers/auth.dart';
-import 'package:in_market_user_app/widgets/shop_not_card.dart';
 import 'package:provider/provider.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -16,9 +15,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
     final authProvider = Provider.of<AuthProvider>(context);
 
     return Column(
-      children: [
+      children: const [
         Expanded(
-          child: ShopNotCard(authProvider: authProvider),
+          child: Center(child: Text('注文履歴がありません')),
         ),
       ],
     );

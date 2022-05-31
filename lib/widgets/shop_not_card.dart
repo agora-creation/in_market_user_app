@@ -14,16 +14,16 @@ class ShopNotCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(8),
       child: Card(
-        elevation: 0,
+        elevation: 3,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text('注文する店舗をこのアプリに設定してください。'),
               const Text('設定できる店舗は一つだけです。'),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
               CustomTextButton(
                 labelText: '店舗を選択する',
                 backgroundColor: Colors.blue,

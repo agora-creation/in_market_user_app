@@ -5,7 +5,7 @@ import 'package:in_market_user_app/models/user.dart';
 import 'package:in_market_user_app/providers/auth.dart';
 import 'package:in_market_user_app/screens/cart.dart';
 import 'package:in_market_user_app/screens/history.dart';
-import 'package:in_market_user_app/screens/items.dart';
+import 'package:in_market_user_app/screens/item.dart';
 import 'package:in_market_user_app/screens/user.dart';
 import 'package:in_market_user_app/widgets/custom_bottom_navigation_bar.dart';
 import 'package:in_market_user_app/widgets/home_title.dart';
@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
     UserModel? user = authProvider.user;
     ShopModel? shop = authProvider.currentShop;
     List<Widget> tabs = [
-      const ItemsScreen(),
+      const ItemScreen(),
       const HistoryScreen(),
       const UserScreen(),
     ];

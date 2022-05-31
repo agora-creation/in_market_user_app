@@ -6,12 +6,10 @@ import 'package:in_market_user_app/widgets/shop_exit_dialog.dart';
 class HomeTitle extends StatelessWidget {
   final AuthProvider authProvider;
   final ShopModel? shop;
-  final Function()? onTap;
 
   const HomeTitle({
     required this.authProvider,
     this.shop,
-    this.onTap,
     Key? key,
   }) : super(key: key);
 
@@ -32,7 +30,7 @@ class HomeTitle extends StatelessWidget {
         children: [
           Text(shop?.name ?? '店舗未選択'),
           const SizedBox(width: 4),
-          if (shop != null) const Icon(Icons.arrow_drop_down) else Container(),
+          shop != null ? const Icon(Icons.arrow_drop_down) : Container(),
         ],
       ),
     );

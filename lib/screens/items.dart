@@ -4,6 +4,7 @@ import 'package:in_market_user_app/models/shop.dart';
 import 'package:in_market_user_app/models/shop_item.dart';
 import 'package:in_market_user_app/providers/auth.dart';
 import 'package:in_market_user_app/providers/item.dart';
+import 'package:in_market_user_app/widgets/shop_not_card.dart';
 import 'package:provider/provider.dart';
 
 class ItemsScreen extends StatefulWidget {
@@ -34,6 +35,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
                   items.add(ShopItemModel.fromSnapshot(doc));
                 }
               }
+              if (shop == null) return ShopNotCard(authProvider: authProvider);
               if (items.isEmpty) return const Center(child: Text('商品がありません'));
               return GridView.builder(
                 shrinkWrap: true,

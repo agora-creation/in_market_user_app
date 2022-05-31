@@ -20,17 +20,17 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
-  List<Widget> tabs = [
-    const ItemsScreen(),
-    const HistoryScreen(),
-    const UserScreen(),
-  ];
 
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
     UserModel? user = authProvider.user;
     ShopModel? shop = authProvider.currentShop;
+    List<Widget> tabs = [
+      const ItemsScreen(),
+      const HistoryScreen(),
+      const UserScreen(),
+    ];
 
     return Scaffold(
       appBar: AppBar(

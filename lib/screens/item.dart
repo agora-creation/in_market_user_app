@@ -5,6 +5,7 @@ import 'package:in_market_user_app/models/shop.dart';
 import 'package:in_market_user_app/models/shop_item.dart';
 import 'package:in_market_user_app/providers/auth.dart';
 import 'package:in_market_user_app/providers/item.dart';
+import 'package:in_market_user_app/providers/order.dart';
 import 'package:in_market_user_app/screens/item_detail.dart';
 import 'package:in_market_user_app/widgets/item_card.dart';
 import 'package:in_market_user_app/widgets/shop_not_card.dart';
@@ -22,6 +23,7 @@ class _ItemScreenState extends State<ItemScreen> {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
     final itemProvider = Provider.of<ItemProvider>(context);
+    final orderProvider = Provider.of<OrderProvider>(context);
     ShopModel? shop = authProvider.currentShop;
     List<ShopItemModel> items = [];
 
@@ -54,10 +56,10 @@ class _ItemScreenState extends State<ItemScreen> {
                   return ItemCard(
                     shop: shop,
                     item: item,
-                    onTap: () => nextScreen(
-                      context,
-                      ItemDetailScreen(item: item),
-                    ),
+                    onTap: () {
+                      orderProvider.clearController();
+                      nextScreen(context, ItemDetailScreen(item: item));
+                    },
                   );
                 },
               );

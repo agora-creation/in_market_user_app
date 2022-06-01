@@ -25,7 +25,7 @@ class RoundLgButton extends StatelessWidget {
         style: TextButton.styleFrom(
           backgroundColor: backgroundColor,
           side: borderColor != null
-              ? BorderSide(color: borderColor ?? const Color(0xFF000000)C)
+              ? BorderSide(color: borderColor ?? const Color(0xFF000000))
               : null,
           shape: const StadiumBorder(),
           padding: const EdgeInsets.symmetric(vertical: 16),

@@ -48,8 +48,8 @@ class _UserPasswordScreenState extends State<UserPasswordScreen> {
           const SizedBox(height: 16),
           RoundLgButton(
             labelText: '変更内容を保存',
-            labelColor: Colors.blue,
-            borderColor: Colors.blue,
+            labelColor: Colors.white,
+            backgroundColor: Colors.red.shade400,
             onPressed: () async {
               String? errorText = await authProvider.updatePassword();
               if (errorText != null) {

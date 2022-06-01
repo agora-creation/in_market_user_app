@@ -68,8 +68,8 @@ class _UserScreenState extends State<UserScreen> {
                   const SizedBox(height: 24),
                   RoundLgButton(
                     labelText: 'ログアウト',
-                    labelColor: Colors.redAccent,
-                    borderColor: Colors.redAccent,
+                    labelColor: Colors.red,
+                    borderColor: Colors.red.shade400,
                     onPressed: () async {
                       await authProvider.logout();
                       if (!mounted) return;

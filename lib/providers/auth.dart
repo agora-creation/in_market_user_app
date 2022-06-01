@@ -38,6 +38,11 @@ class AuthProvider with ChangeNotifier {
     telController.text = '';
   }
 
+  void setController() {
+    emailController.text = _user?.email ?? '';
+    nameController.text = _user?.name ?? '';
+  }
+
   AuthProvider.initialize() : auth = FirebaseAuth.instance {
     auth?.authStateChanges().listen(_onStateChanged);
   }
@@ -101,6 +106,64 @@ class AuthProvider with ChangeNotifier {
       _status = Status.unauthenticated;
       notifyListeners();
       errorText = '登録に失敗しました。';
+    }
+    return errorText;
+  }
+
+  Future<String?> updateName() async {
+    String? errorText;
+    if (nameController.text.isEmpty) errorText = 'お名前を入力してください。';
+    try {
+      userService.update({
+        'id': _user?.id,
+        'name': nameController.text.trim(),
+      });
+    } catch (e) {
+      errorText = 'お名前の更新に失敗しました。';
+    }
+    return errorText;
+  }
+
+  Future<String?> updateEmail() async {
+    String? errorText;
+    if (emailController.text.isEmpty) errorText = 'メールアドレスを入力してください。';
+    try {
+      await auth?.currentUser
+          ?.updateEmail(emailController.text.trim())
+          .then((value) {
+        userService.update({
+          'id': _user?.id,
+          'email': emailController.text.trim(),
+        });
+      });
+    } catch (e) {
+      errorText = 'メールアドレスの更新に失敗しました。';
+    }
+    return errorText;
+  }
+
+  Future<String?> updatePassword() async {
+    String? errorText;
+    if (passwordController.text.isEmpty) errorText = 'パスワードを入力してください。';
+    if (passwordController.text != rePasswordController.text) {
+      errorText = 'パスワードをご確認ください。';
+    }
+    try {
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: _user?.email ?? '',
+        password: _user?.password ?? '',
+      );
+      await auth?.signInWithCredential(credential);
+      await auth?.currentUser
+          ?.updatePassword(passwordController.text.trim())
+          .then((value) {
+        userService.update({
+          'id': _user?.id,
+          'password': passwordController.text.trim(),
+        });
+      });
+    } catch (e) {
+      errorText = 'パスワードの更新に失敗しました。';
     }
     return errorText;
   }

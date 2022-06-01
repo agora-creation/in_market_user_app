@@ -38,17 +38,24 @@ class _UserScreenState extends State<UserScreen> {
                   TapListTile(
                     title: '名前の変更',
                     subtitle: user?.name,
-                    onTap: () => nextScreen(context, const UserNameScreen()),
+                    onTap: () {
+                      authProvider.setController();
+                      nextScreen(context, const UserNameScreen());
+                    },
                   ),
                   TapListTile(
                     title: 'メールアドレスの変更',
                     subtitle: user?.email,
-                    onTap: () => nextScreen(context, const UserEmailScreen()),
+                    onTap: () {
+                      authProvider.setController();
+                      nextScreen(context, const UserEmailScreen());
+                    },
                   ),
                   TapListTile(
                     title: 'パスワードの変更',
-                    onTap: () =>
-                        nextScreen(context, const UserPasswordScreen()),
+                    onTap: () {
+                      nextScreen(context, const UserPasswordScreen());
+                    },
                   ),
                   TapListTile(
                     title: 'お届け先の登録',

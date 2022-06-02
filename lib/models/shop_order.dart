@@ -32,7 +32,7 @@ class ShopOrderModel {
     _shopName = snapshot.data()!['shopName'] ?? '';
     _userId = snapshot.data()!['userId'] ?? '';
     _userName = snapshot.data()!['userName'] ?? '';
-    cartList = _convertList(snapshot.data()!['cartList']);
+    cartList = _convertList(snapshot.data()!['cartList'] ?? []);
     _zip = snapshot.data()!['zip'] ?? '';
     _address = snapshot.data()!['address'] ?? '';
     _tel = snapshot.data()!['tel'] ?? '';

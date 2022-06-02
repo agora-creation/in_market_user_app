@@ -26,9 +26,9 @@ class UserModel {
     _email = snapshot.data()!['email'] ?? '';
     _password = snapshot.data()!['password'] ?? '';
     _name = snapshot.data()!['name'] ?? '';
-    addressList = _convertList(snapshot.data()!['addressList']);
+    addressList = _convertList(snapshot.data()!['addressList'] ?? []);
     _shopId = snapshot.data()!['shopId'] ?? '';
-    cartList = _convertList2(snapshot.data()!['cartList']);
+    cartList = _convertList2(snapshot.data()!['cartList'] ?? []);
     _token = snapshot.data()!['token'] ?? '';
     _createdAt = snapshot.data()!['createdAt'].toDate() ?? DateTime.now();
   }

@@ -5,7 +5,6 @@ import 'package:in_market_user_app/models/shop.dart';
 import 'package:in_market_user_app/models/shop_item.dart';
 import 'package:in_market_user_app/providers/auth.dart';
 import 'package:in_market_user_app/providers/item.dart';
-import 'package:in_market_user_app/providers/order.dart';
 import 'package:in_market_user_app/screens/item_detail.dart';
 import 'package:in_market_user_app/widgets/item_card.dart';
 import 'package:in_market_user_app/widgets/shop_not_card.dart';
@@ -23,7 +22,6 @@ class _ItemScreenState extends State<ItemScreen> {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
     final itemProvider = Provider.of<ItemProvider>(context);
-    final orderProvider = Provider.of<OrderProvider>(context);
     ShopModel? shop = authProvider.currentShop;
     List<ShopItemModel> items = [];
 
@@ -31,7 +29,7 @@ class _ItemScreenState extends State<ItemScreen> {
       children: [
         Expanded(
           child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: itemProvider.streamList(shop: shop),
+            stream: itemProvider.streamItems(shop: shop),
             builder: (context, snapshot) {
               items.clear();
               if (snapshot.hasData) {
@@ -57,7 +55,7 @@ class _ItemScreenState extends State<ItemScreen> {
                     shop: shop,
                     item: item,
                     onTap: () {
-                      orderProvider.clearController();
+                      authProvider.setQuantity(item: item);
                       nextScreen(context, ItemDetailScreen(item: item));
                     },
                   );

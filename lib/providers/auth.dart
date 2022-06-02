@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:in_market_user_app/helpers/functions.dart';
+import 'package:in_market_user_app/models/cart.dart';
 import 'package:in_market_user_app/models/shop.dart';
+import 'package:in_market_user_app/models/shop_item.dart';
 import 'package:in_market_user_app/models/user.dart';
 import 'package:in_market_user_app/services/shop.dart';
 import 'package:in_market_user_app/services/user.dart';
@@ -230,6 +232,79 @@ class AuthProvider with ChangeNotifier {
       _currentShop = null;
     } catch (e) {
       errorText = '店舗の選択に失敗しました。';
+    }
+    notifyListeners();
+    return errorText;
+  }
+
+  int quantity = 1;
+
+  void addQuantity() {
+    quantity += 1;
+    notifyListeners();
+  }
+
+  void removeQuantity() {
+    if (quantity > 0) {
+      quantity -= 1;
+    }
+    notifyListeners();
+  }
+
+  void setQuantity({required ShopItemModel item}) {
+    quantity = 1;
+    for (CartModel cart in user?.cartList ?? []) {
+      if (cart.id == item.id) {
+        quantity = cart.quantity;
+      }
+    }
+  }
+
+  Future<String?> addCart({required ShopItemModel item}) async {
+    String? errorText;
+    try {
+      List<Map> cartList = [];
+      bool addFlg = true;
+      for (CartModel cart in user?.cartList ?? []) {
+        if (cart.id == item.id) {
+          cart.quantity = quantity;
+          addFlg = false;
+        }
+        cartList.add(cart.toMap());
+      }
+      if (addFlg == true) {
+        cartList.add({
+          'id': item.id,
+          'number': item.number,
+          'name': item.name,
+          'price': item.price,
+          'unit': item.unit,
+          'imageUrl': item.imageUrl,
+          'quantity': quantity,
+        });
+      }
+      userService.update({
+        'id': user?.id,
+        'cartList': cartList,
+      });
+      _user = await userService.select(id: user?.id);
+    } catch (e) {
+      errorText = 'カートの追加に失敗しました。';
+    }
+    notifyListeners();
+    return errorText;
+  }
+
+  Future<String?> clearCart() async {
+    String? errorText;
+    try {
+      userService.update({
+        'id': user?.id,
+        'cartList': [],
+      });
+      _user = await userService.select(id: user?.id);
+    } catch (e) {
+      errorText = 'カートのリセットに失敗しました。';
     }
     notifyListeners();
     return errorText;

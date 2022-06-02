@@ -7,6 +7,7 @@ import 'package:in_market_user_app/screens/cart.dart';
 import 'package:in_market_user_app/screens/history.dart';
 import 'package:in_market_user_app/screens/item.dart';
 import 'package:in_market_user_app/screens/user.dart';
+import 'package:in_market_user_app/widgets/cart_button.dart';
 import 'package:in_market_user_app/widgets/custom_bottom_navigation_bar.dart';
 import 'package:in_market_user_app/widgets/home_title.dart';
 import 'package:provider/provider.dart';
@@ -40,9 +41,9 @@ class _HomeScreenState extends State<HomeScreen> {
           shop: shop,
         ),
         actions: [
-          IconButton(
+          CartButton(
             onPressed: () => overlayScreen(context, const CartScreen()),
-            icon: const Icon(Icons.shopping_cart),
+            cartList: user?.cartList ?? [],
           ),
         ],
       ),

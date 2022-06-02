@@ -5,7 +5,7 @@ class CartModel {
   int _price = 0;
   String _unit = '';
   String _imageUrl = '';
-  int _quantity = 0;
+  int quantity = 0;
 
   String get id => _id;
   String get number => _number;
@@ -13,7 +13,6 @@ class CartModel {
   int get price => _price;
   String get unit => _unit;
   String get imageUrl => _imageUrl;
-  int get quantity => _quantity;
 
   CartModel.fromMap(Map data) {
     _id = data['id'] ?? '';
@@ -22,7 +21,7 @@ class CartModel {
     _price = data['price'] ?? 0;
     _unit = data['unit'] ?? '';
     _imageUrl = data['imageUrl'] ?? '';
-    _quantity = data['quantity'] ?? 0;
+    quantity = data['quantity'] ?? 0;
   }
 
   Map toMap() => {
@@ -32,6 +31,6 @@ class CartModel {
         'price': _price,
         'unit': _unit,
         'imageUrl': _imageUrl,
-        'quantity': _quantity,
+        'quantity': quantity,
       };
 }

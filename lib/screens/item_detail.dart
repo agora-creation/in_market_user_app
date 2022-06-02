@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:in_market_user_app/models/shop_item.dart';
-import 'package:in_market_user_app/providers/order.dart';
+import 'package:in_market_user_app/providers/auth.dart';
+import 'package:in_market_user_app/widgets/error_dialog.dart';
 import 'package:in_market_user_app/widgets/item_image.dart';
 import 'package:in_market_user_app/widgets/item_info.dart';
 import 'package:in_market_user_app/widgets/quantity_lg_button.dart';
@@ -22,7 +23,7 @@ class ItemDetailScreen extends StatefulWidget {
 class _ItemDetailScreenState extends State<ItemDetailScreen> {
   @override
   Widget build(BuildContext context) {
-    final orderProvider = Provider.of<OrderProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -41,16 +42,27 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           const SizedBox(height: 24),
           QuantityLgButton(
             item: widget.item,
-            quantity: orderProvider.quantityController,
-            removeOnTap: () => orderProvider.removeQuantity(),
-            addOnTap: () => orderProvider.addQuantity(),
+            quantity: authProvider.quantity,
+            removeOnTap: () => authProvider.removeQuantity(),
+            addOnTap: () => authProvider.addQuantity(),
           ),
           const SizedBox(height: 8),
           RoundLgButton(
             labelText: 'カートに入れる',
             labelColor: Colors.white,
             backgroundColor: Colors.red.shade400,
-            onPressed: () {
+            onPressed: () async {
+              String? errorText = await authProvider.addCart(item: widget.item);
+              if (errorText != null) {
+                showDialog(
+                  context: context,
+                  builder: (_) => ErrorDialog(
+                    message: errorText,
+                  ),
+                );
+                return;
+              }
+              if (!mounted) return;
               Navigator.pop(context);
             },
           ),

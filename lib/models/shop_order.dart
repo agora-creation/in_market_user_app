@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:in_market_user_app/models/cart.dart';
 
 class ShopOrderModel {
   String _id = '';
@@ -6,7 +7,7 @@ class ShopOrderModel {
   String _shopName = '';
   String _userId = '';
   String _userName = '';
-  List cart = [];
+  List<CartModel> cartList = [];
   String _zip = '';
   String _address = '';
   String _tel = '';
@@ -31,10 +32,19 @@ class ShopOrderModel {
     _shopName = snapshot.data()!['shopName'] ?? '';
     _userId = snapshot.data()!['userId'] ?? '';
     _userName = snapshot.data()!['userName'] ?? '';
+    cartList = _convertList(snapshot.data()!['cartList']);
     _zip = snapshot.data()!['zip'] ?? '';
     _address = snapshot.data()!['address'] ?? '';
     _tel = snapshot.data()!['tel'] ?? '';
     _status = snapshot.data()!['status'] ?? 0;
     _createdAt = snapshot.data()!['createdAt'].toDate() ?? DateTime.now();
+  }
+
+  List<CartModel> _convertList(List list) {
+    List<CartModel> converted = [];
+    for (Map data in list) {
+      converted.add(CartModel.fromMap(data));
+    }
+    return converted;
   }
 }

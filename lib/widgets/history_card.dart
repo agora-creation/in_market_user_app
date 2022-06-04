@@ -14,22 +14,40 @@ class HistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String statusText = '';
+    Widget statusChip = Container();
     switch (order.status) {
       case 0:
-        statusText = '配達済み';
+        statusChip = const Chip(
+          backgroundColor: Colors.grey,
+          label: Text(
+            '配達済み',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        );
         break;
       case 1:
-        statusText = '受注待ち';
+        statusChip = const Chip(
+          backgroundColor: Colors.red,
+          label: Text(
+            '受注待ち',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        );
         break;
       case 2:
-        statusText = '配達待ち';
-        break;
-      case 4:
-        statusText = 'キャンセル';
-        break;
-      default:
-        statusText = '受注待ち';
+        statusChip = const Chip(
+          backgroundColor: Colors.orange,
+          label: Text(
+            '配達待ち',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        );
         break;
     }
 
@@ -70,7 +88,7 @@ class HistoryCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                Chip(label: Text(statusText)),
+                statusChip,
               ],
             ),
           ),

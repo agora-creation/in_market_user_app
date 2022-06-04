@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:in_market_user_app/helpers/date_machine_util.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
@@ -107,16 +106,4 @@ Timestamp convertTimestamp(DateTime date, bool end) {
   return Timestamp.fromMillisecondsSinceEpoch(
     DateTime.parse(dateTime).millisecondsSinceEpoch,
   );
-}
-
-// 1ヶ月間の配列作成
-List<DateTime> generateDays(DateTime month) {
-  List<DateTime> days = [];
-  var dateMap = DateMachineUtil.getMonthDate(month, 0);
-  DateTime start = DateTime.parse('${dateMap['start']}');
-  DateTime end = DateTime.parse('${dateMap['end']}');
-  for (int i = 0; i <= end.difference(start).inDays; i++) {
-    days.add(start.add(Duration(days: i)));
-  }
-  return days;
 }

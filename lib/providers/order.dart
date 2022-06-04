@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:in_market_user_app/helpers/functions.dart';
 import 'package:in_market_user_app/models/cart.dart';
 import 'package:in_market_user_app/models/shop.dart';
+import 'package:in_market_user_app/models/shop_order.dart';
 import 'package:in_market_user_app/models/user.dart';
 import 'package:in_market_user_app/services/shop_order.dart';
 
@@ -43,12 +44,24 @@ class OrderProvider with ChangeNotifier {
     return errorText;
   }
 
+  Future<String?> cancel({ShopOrderModel? order}) async {
+    String? errorText;
+    if (order == null) errorText = '注文のキャンセルに失敗しました。';
+    try {
+      orderService.delete({
+        'id': order?.id,
+        'shopId': order?.shopId,
+      });
+    } catch (e) {
+      errorText = '注文のキャンセルに失敗しました。';
+    }
+    return errorText;
+  }
+
   DateTime month = DateTime.now();
-  List<DateTime> days = generateDays(DateTime.now());
 
   void changeMonth(DateTime value) {
     month = value;
-    days = generateDays(month);
     notifyListeners();
   }
 
@@ -56,6 +69,11 @@ class OrderProvider with ChangeNotifier {
     ShopModel? shop,
     UserModel? user,
   }) {
+    DateTime monthStart = DateTime(month.year, month.month, 1);
+    DateTime monthEnd =
+        DateTime(month.year, month.month + 1, 1).add(const Duration(days: -1));
+    Timestamp startAt = convertTimestamp(monthStart, false);
+    Timestamp endAt = convertTimestamp(monthEnd, true);
     Stream<QuerySnapshot<Map<String, dynamic>>>? ret;
     ret = FirebaseFirestore.instance
         .collection('shop')
@@ -63,7 +81,7 @@ class OrderProvider with ChangeNotifier {
         .collection('order')
         .where('userId', isEqualTo: user?.id ?? 'error')
         .orderBy('createdAt', descending: true)
-        .snapshots();
+        .startAt([endAt]).endAt([startAt]).snapshots();
     return ret;
   }
 }

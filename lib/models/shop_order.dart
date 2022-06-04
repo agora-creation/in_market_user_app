@@ -11,7 +11,6 @@ class ShopOrderModel {
   String _zip = '';
   String _address = '';
   String _tel = '';
-  //配達済み、受注待ち、配達待ち、キャンセル
   int _status = 0;
   DateTime _createdAt = DateTime.now();
 
@@ -46,5 +45,21 @@ class ShopOrderModel {
       converted.add(CartModel.fromMap(data));
     }
     return converted;
+  }
+
+  String statusText() {
+    String ret = '';
+    switch (_status) {
+      case 0:
+        ret = '配達済み';
+        break;
+      case 1:
+        ret = '受注待ち';
+        break;
+      case 2:
+        ret = '配達待ち';
+        break;
+    }
+    return ret;
   }
 }

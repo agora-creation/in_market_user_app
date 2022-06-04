@@ -14,43 +14,6 @@ class HistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget statusChip = Container();
-    switch (order.status) {
-      case 0:
-        statusChip = const Chip(
-          backgroundColor: Colors.grey,
-          label: Text(
-            '配達済み',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        );
-        break;
-      case 1:
-        statusChip = const Chip(
-          backgroundColor: Colors.red,
-          label: Text(
-            '受注待ち',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        );
-        break;
-      case 2:
-        statusChip = const Chip(
-          backgroundColor: Colors.orange,
-          label: Text(
-            '配達待ち',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        );
-        break;
-    }
-
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: GestureDetector(
@@ -88,7 +51,7 @@ class HistoryCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                statusChip,
+                order.statusChip(),
               ],
             ),
           ),

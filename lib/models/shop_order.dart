@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:in_market_user_app/models/cart.dart';
 
 class ShopOrderModel {
@@ -58,6 +60,60 @@ class ShopOrderModel {
         break;
       case 2:
         ret = '配達待ち';
+        break;
+      case 3:
+        ret = '配達中';
+        break;
+    }
+    return ret;
+  }
+
+  Widget statusChip() {
+    Widget ret = Container();
+    switch (_status) {
+      case 0:
+        ret = const Chip(
+          backgroundColor: Colors.grey,
+          label: Text(
+            '配達済み',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        );
+        break;
+      case 1:
+        ret = const Chip(
+          backgroundColor: Colors.red,
+          label: Text(
+            '受注待ち',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        );
+        break;
+      case 2:
+        ret = const Chip(
+          backgroundColor: Colors.deepOrange,
+          label: Text(
+            '配達待ち',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        );
+        break;
+      case 3:
+        ret = const Chip(
+          backgroundColor: Colors.orange,
+          label: Text(
+            '配達中',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        );
         break;
     }
     return ret;

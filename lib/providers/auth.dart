@@ -242,6 +242,22 @@ class AuthProvider with ChangeNotifier {
     return errorText;
   }
 
+  Future updateItemIds({required ShopItemModel item}) async {
+    List<String> itemIds = user?.itemIds ?? [];
+    var contain = itemIds.where((e) => e == item.id);
+    if (contain.isEmpty) {
+      itemIds.add(item.id);
+    } else {
+      itemIds.removeWhere((e) => e == item.id);
+    }
+    userService.update({
+      'id': user?.id,
+      'itemIds': itemIds,
+    });
+    _user = await userService.select(id: user?.id);
+    notifyListeners();
+  }
+
   int quantity = 1;
 
   void addQuantity() {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:in_market_user_app/helpers/functions.dart';
 import 'package:in_market_user_app/models/shop.dart';
 import 'package:in_market_user_app/models/shop_item.dart';
+import 'package:in_market_user_app/models/user.dart';
 import 'package:in_market_user_app/providers/auth.dart';
 import 'package:in_market_user_app/providers/item.dart';
 import 'package:in_market_user_app/screens/item_detail.dart';
@@ -21,6 +22,8 @@ class _ItemScreenState extends State<ItemScreen> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
+    UserModel? user = authProvider.user;
+    List<String> itemIds = user?.itemIds ?? [];
     ShopModel? shop = authProvider.currentShop;
     final itemProvider = Provider.of<ItemProvider>(context);
     List<ShopItemModel> items = [];
@@ -35,7 +38,8 @@ class _ItemScreenState extends State<ItemScreen> {
               if (snapshot.hasData) {
                 for (DocumentSnapshot<Map<String, dynamic>> doc
                     in snapshot.data!.docs) {
-                  items.add(ShopItemModel.fromSnapshot(doc));
+                  ShopItemModel item = ShopItemModel.fromSnapshot(doc);
+                  if (itemIds.contains(item.id)) items.add(item);
                 }
               }
               if (shop == null) return ShopNotCard(authProvider: authProvider);

@@ -9,6 +9,7 @@ class UserModel {
   String _address = '';
   String _tel = '';
   String _shopId = '';
+  List<String> itemIds = [];
   String _token = '';
   DateTime _createdAt = DateTime.now();
 
@@ -32,7 +33,16 @@ class UserModel {
     _address = snapshot.data()!['address'] ?? '';
     _tel = snapshot.data()!['tel'] ?? '';
     _shopId = snapshot.data()!['shopId'] ?? '';
+    itemIds = _convertList(snapshot.data()!['itemIds'] ?? []);
     _token = snapshot.data()!['token'] ?? '';
     _createdAt = snapshot.data()!['createdAt'].toDate() ?? DateTime.now();
+  }
+
+  List<String> _convertList(List list) {
+    List<String> converted = [];
+    for (String value in list) {
+      converted.add(value);
+    }
+    return converted;
   }
 }

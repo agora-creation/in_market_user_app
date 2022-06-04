@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:in_market_user_app/helpers/functions.dart';
+import 'package:in_market_user_app/models/shop.dart';
 import 'package:in_market_user_app/models/user.dart';
 import 'package:in_market_user_app/providers/auth.dart';
 import 'package:in_market_user_app/screens/login.dart';
@@ -24,6 +25,7 @@ class _UserScreenState extends State<UserScreen> {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
     UserModel? user = authProvider.user;
+    ShopModel? shop = authProvider.currentShop;
 
     return Column(
       children: [
@@ -66,10 +68,15 @@ class _UserScreenState extends State<UserScreen> {
                       nextScreen(context, const UserAddressScreen());
                     },
                   ),
-                  TapListTile(
-                    title: '商品の表示設定',
-                    onTap: () => nextScreen(context, const UserItemScreen()),
-                  ),
+                  shop != null
+                      ? TapListTile(
+                          title: '商品の表示設定',
+                          onTap: () => nextScreen(
+                            context,
+                            const UserItemScreen(),
+                          ),
+                        )
+                      : Container(),
                   const SizedBox(height: 24),
                   RoundLgButton(
                     labelText: 'ログアウト',

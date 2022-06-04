@@ -82,7 +82,6 @@ class _RegistScreenState extends State<RegistScreen> {
                       const SizedBox(height: 8),
                       CustomTextFormField(
                         controller: authProvider.nameController,
-                        obscureText: true,
                         keyboardType: TextInputType.name,
                         labelText: 'お名前',
                         iconData: Icons.person,
@@ -90,7 +89,6 @@ class _RegistScreenState extends State<RegistScreen> {
                       const SizedBox(height: 16),
                       CustomTextFormField(
                         controller: authProvider.zipController,
-                        obscureText: true,
                         keyboardType: TextInputType.number,
                         labelText: '郵便番号',
                         iconData: Icons.location_on,
@@ -98,7 +96,6 @@ class _RegistScreenState extends State<RegistScreen> {
                       const SizedBox(height: 16),
                       CustomTextFormField(
                         controller: authProvider.addressController,
-                        obscureText: true,
                         keyboardType: TextInputType.streetAddress,
                         labelText: '住所',
                         iconData: Icons.map,
@@ -106,7 +103,6 @@ class _RegistScreenState extends State<RegistScreen> {
                       const SizedBox(height: 16),
                       CustomTextFormField(
                         controller: authProvider.telController,
-                        obscureText: true,
                         keyboardType: TextInputType.phone,
                         labelText: '電話番号',
                         iconData: Icons.phone,

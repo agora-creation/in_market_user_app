@@ -52,6 +52,7 @@ class _UserNameScreenState extends State<UserNameScreen> {
                 );
                 return;
               }
+              await authProvider.reloadUser();
               authProvider.clearController();
               if (!mounted) return;
               Navigator.pop(context);

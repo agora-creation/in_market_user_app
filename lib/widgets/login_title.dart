@@ -22,7 +22,7 @@ class LoginTitle extends StatelessWidget {
           '- 注文者用 -',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 18.0,
+            fontSize: 18,
           ),
         ),
       ],

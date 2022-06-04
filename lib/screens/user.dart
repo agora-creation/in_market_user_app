@@ -39,7 +39,7 @@ class _UserScreenState extends State<UserScreen> {
                     title: '名前の変更',
                     subtitle: user?.name,
                     onTap: () {
-                      authProvider.setController();
+                      authProvider.nameController.text = user?.name ?? '';
                       nextScreen(context, const UserNameScreen());
                     },
                   ),
@@ -47,7 +47,7 @@ class _UserScreenState extends State<UserScreen> {
                     title: 'メールアドレスの変更',
                     subtitle: user?.email,
                     onTap: () {
-                      authProvider.setController();
+                      authProvider.emailController.text = user?.email ?? '';
                       nextScreen(context, const UserEmailScreen());
                     },
                   ),
@@ -58,8 +58,13 @@ class _UserScreenState extends State<UserScreen> {
                     },
                   ),
                   TapListTile(
-                    title: 'お届け先の登録',
-                    onTap: () => nextScreen(context, const UserAddressScreen()),
+                    title: 'お届け先の変更',
+                    onTap: () {
+                      authProvider.zipController.text = user?.zip ?? '';
+                      authProvider.addressController.text = user?.address ?? '';
+                      authProvider.telController.text = user?.tel ?? '';
+                      nextScreen(context, const UserAddressScreen());
+                    },
                   ),
                   TapListTile(
                     title: '商品の表示設定',
@@ -68,7 +73,7 @@ class _UserScreenState extends State<UserScreen> {
                   const SizedBox(height: 24),
                   RoundLgButton(
                     labelText: 'ログアウト',
-                    labelColor: Colors.red,
+                    labelColor: Colors.red.shade400,
                     borderColor: Colors.red.shade400,
                     onPressed: () async {
                       await authProvider.logout();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:in_market_user_app/helpers/functions.dart';
+import 'package:in_market_user_app/models/cart.dart';
 import 'package:in_market_user_app/models/shop.dart';
 import 'package:in_market_user_app/models/user.dart';
 import 'package:in_market_user_app/providers/auth.dart';
@@ -41,9 +42,19 @@ class _HomeScreenState extends State<HomeScreen> {
           shop: shop,
         ),
         actions: [
-          CartButton(
-            onPressed: () => overlayScreen(context, const CartScreen()),
-            cartList: user?.cartList ?? [],
+          FutureBuilder<List<CartModel>>(
+            future: authProvider.getCart(),
+            builder: (context, snapshot) {
+              int count = 0;
+              List<CartModel> cartList = snapshot.data ?? [];
+              for (CartModel cart in cartList) {
+                count += cart.quantity;
+              }
+              return CartButton(
+                onPressed: () => overlayScreen(context, const CartScreen()),
+                count: count,
+              );
+            },
           ),
         ],
       ),

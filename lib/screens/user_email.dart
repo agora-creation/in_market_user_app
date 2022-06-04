@@ -52,6 +52,7 @@ class _UserEmailScreenState extends State<UserEmailScreen> {
                 );
                 return;
               }
+              await authProvider.reloadUser();
               authProvider.clearController();
               if (!mounted) return;
               Navigator.pop(context);

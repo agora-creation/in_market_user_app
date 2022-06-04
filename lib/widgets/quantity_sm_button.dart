@@ -14,38 +14,40 @@ class QuantitySmButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.red.shade400),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            onPressed: removeOnTap,
-            icon: Icon(
-              Icons.remove,
-              color: Colors.red.shade400,
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.red.shade400),
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+              onPressed: removeOnTap,
+              icon: Icon(
+                Icons.remove,
+                color: Colors.red.shade400,
+              ),
             ),
-          ),
-          Text(
-            '数量: $quantity',
-            style: TextStyle(
-              color: Colors.red.shade400,
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'SourceHanSans-Bold',
+            Text(
+              '数量: $quantity',
+              style: TextStyle(
+                color: Colors.red.shade400,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'SourceHanSans-Bold',
+              ),
             ),
-          ),
-          IconButton(
-            onPressed: addOnTap,
-            icon: Icon(
-              Icons.add,
-              color: Colors.red.shade400,
+            IconButton(
+              onPressed: addOnTap,
+              icon: Icon(
+                Icons.add,
+                color: Colors.red.shade400,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,15 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:in_market_user_app/models/address.dart';
-import 'package:in_market_user_app/models/cart.dart';
 
 class UserModel {
   String _id = '';
   String _email = '';
   String _password = '';
   String _name = '';
-  List<AddressModel> addressList = [];
+  String _zip = '';
+  String _address = '';
+  String _tel = '';
   String _shopId = '';
-  List<CartModel> cartList = [];
   String _token = '';
   DateTime _createdAt = DateTime.now();
 
@@ -17,6 +16,9 @@ class UserModel {
   String get email => _email;
   String get password => _password;
   String get name => _name;
+  String get zip => _zip;
+  String get address => _address;
+  String get tel => _tel;
   String get shopId => _shopId;
   String get token => _token;
   DateTime get createdAt => _createdAt;
@@ -26,26 +28,11 @@ class UserModel {
     _email = snapshot.data()!['email'] ?? '';
     _password = snapshot.data()!['password'] ?? '';
     _name = snapshot.data()!['name'] ?? '';
-    addressList = _convertList(snapshot.data()!['addressList'] ?? []);
+    _zip = snapshot.data()!['zip'] ?? '';
+    _address = snapshot.data()!['address'] ?? '';
+    _tel = snapshot.data()!['tel'] ?? '';
     _shopId = snapshot.data()!['shopId'] ?? '';
-    cartList = _convertList2(snapshot.data()!['cartList'] ?? []);
     _token = snapshot.data()!['token'] ?? '';
     _createdAt = snapshot.data()!['createdAt'].toDate() ?? DateTime.now();
-  }
-
-  List<AddressModel> _convertList(List list) {
-    List<AddressModel> converted = [];
-    for (Map data in list) {
-      converted.add(AddressModel.fromMap(data));
-    }
-    return converted;
-  }
-
-  List<CartModel> _convertList2(List list) {
-    List<CartModel> converted = [];
-    for (Map data in list) {
-      converted.add(CartModel.fromMap(data));
-    }
-    return converted;
   }
 }

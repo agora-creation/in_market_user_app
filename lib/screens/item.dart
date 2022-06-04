@@ -21,8 +21,8 @@ class _ItemScreenState extends State<ItemScreen> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
-    final itemProvider = Provider.of<ItemProvider>(context);
     ShopModel? shop = authProvider.currentShop;
+    final itemProvider = Provider.of<ItemProvider>(context);
     List<ShopItemModel> items = [];
 
     return Column(

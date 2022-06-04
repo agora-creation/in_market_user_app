@@ -61,6 +61,7 @@ class _UserPasswordScreenState extends State<UserPasswordScreen> {
                 );
                 return;
               }
+              await authProvider.reloadUser();
               authProvider.clearController();
               if (!mounted) return;
               Navigator.pop(context);

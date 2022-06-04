@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:in_market_user_app/helpers/functions.dart';
+import 'package:in_market_user_app/models/cart.dart';
 import 'package:in_market_user_app/providers/auth.dart';
-import 'package:in_market_user_app/widgets/quantity_sm_button.dart';
+import 'package:in_market_user_app/screens/order_conf.dart';
+import 'package:in_market_user_app/widgets/cart_card.dart';
 import 'package:in_market_user_app/widgets/round_lg_button.dart';
-import 'package:in_market_user_app/widgets/round_sm_button.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
@@ -32,83 +34,60 @@ class _CartScreenState extends State<CartScreen> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Card(
-              elevation: 3,
-              clipBehavior: Clip.antiAlias,
-              child: Container(
-                height: 100,
-                padding: const EdgeInsets.all(0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 8,
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: NetworkImage(
-                              'https://placehold.jp/300x200.png',
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const Spacer(flex: 1),
-                    Expanded(
-                      flex: 12,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          const Text('丸和皿'),
-                          Row(
-                            children: [
-                              const QuantitySmButton(
-                                quantity: 1,
-                              ),
-                              RoundSmButton(
-                                labelText: '削除',
-                                labelColor: Colors.white,
-                                backgroundColor: Colors.red.shade400,
-                                onPressed: () async {},
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: RoundLgButton(
-              labelText: '注文内容を確認',
-              labelColor: Colors.white,
-              backgroundColor: Colors.red.shade400,
-              onPressed: () async {
-                if (!mounted) return;
-                Navigator.of(context, rootNavigator: true).pop();
+          Expanded(
+            child: FutureBuilder<List<CartModel>>(
+              future: authProvider.getCart(),
+              builder: (context, snapshot) {
+                List<CartModel> cartList = snapshot.data ?? [];
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: cartList.length,
+                  itemBuilder: (_, index) {
+                    CartModel cart = cartList[index];
+                    return CartCard(
+                      cart: cart,
+                      removeOnTap: () {
+                        authProvider.removeCartQuantity(cart: cart);
+                      },
+                      addOnTap: () {
+                        authProvider.addCartQuantity(cart: cart);
+                      },
+                      deleteOnTap: () {
+                        authProvider.deleteCart(cart: cart);
+                        if (cartList.length == 1) {
+                          if (!mounted) return;
+                          Navigator.of(context, rootNavigator: true).pop();
+                        }
+                      },
+                    );
+                  },
+                );
               },
             ),
           ),
           const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: RoundLgButton(
-              labelText: 'カートのリセット',
-              labelColor: Colors.red,
-              borderColor: Colors.red.shade400,
-              onPressed: () async {
-                await authProvider.clearCart();
-                if (!mounted) return;
-                Navigator.of(context, rootNavigator: true).pop();
-              },
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              children: [
+                RoundLgButton(
+                  labelText: '注文内容を確認',
+                  labelColor: Colors.white,
+                  backgroundColor: Colors.red.shade400,
+                  onPressed: () => nextScreen(context, const OrderConfScreen()),
+                ),
+                const SizedBox(height: 8),
+                RoundLgButton(
+                  labelText: 'カートのリセット',
+                  labelColor: Colors.red.shade400,
+                  borderColor: Colors.red.shade400,
+                  onPressed: () async {
+                    await authProvider.clearCart();
+                    if (!mounted) return;
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                ),
+              ],
             ),
           ),
         ],

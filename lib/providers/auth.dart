@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:in_market_user_app/helpers/functions.dart';
@@ -40,11 +42,6 @@ class AuthProvider with ChangeNotifier {
     telController.text = '';
   }
 
-  void setController() {
-    emailController.text = _user?.email ?? '';
-    nameController.text = _user?.name ?? '';
-  }
-
   AuthProvider.initialize() : auth = FirebaseAuth.instance {
     auth?.authStateChanges().listen(_onStateChanged);
   }
@@ -85,21 +82,15 @@ class AuthProvider with ChangeNotifier {
         password: passwordController.text.trim(),
       )
           .then((value) {
-        String id = randomString(20);
-        List<Map> addressList = [];
-        addressList.add({
-          'id': id,
-          'name': nameController.text.trim(),
-          'zip': zipController.text.trim(),
-          'address': addressController.text.trim(),
-          'tel': telController.text.trim(),
-        });
         userService.create({
           'id': value.user?.uid,
           'email': emailController.text.trim(),
           'password': passwordController.text.trim(),
           'name': nameController.text.trim(),
-          'addressList': addressList,
+          'zip': zipController.text.trim(),
+          'address': addressController.text.trim(),
+          'tel': telController.text.trim(),
+          'shopId': '',
           'token': '',
           'createdAt': DateTime.now(),
         });
@@ -170,12 +161,26 @@ class AuthProvider with ChangeNotifier {
     return errorText;
   }
 
+  Future<String?> updateAddress() async {
+    String? errorText;
+    try {
+      userService.update({
+        'id': _user?.id,
+        'zip': zipController.text.trim(),
+        'address': addressController.text.trim(),
+        'tel': telController.text.trim(),
+      });
+    } catch (e) {
+      errorText = 'お届け先の更新に失敗しました。';
+    }
+    return errorText;
+  }
+
   Future logout() async {
     await auth?.signOut();
     _status = Status.unauthenticated;
     _user = null;
     _currentShop = null;
-    await removePrefs('userId');
     notifyListeners();
     return Future.delayed(Duration.zero);
   }
@@ -245,68 +250,96 @@ class AuthProvider with ChangeNotifier {
   }
 
   void removeQuantity() {
-    if (quantity > 0) {
+    if (quantity > 1) {
       quantity -= 1;
     }
     notifyListeners();
   }
 
-  void setQuantity({required ShopItemModel item}) {
+  Future setQuantity({required ShopItemModel item}) async {
     quantity = 1;
-    for (CartModel cart in user?.cartList ?? []) {
+    List<CartModel> cartList = await getCart();
+    for (CartModel cart in cartList) {
       if (cart.id == item.id) {
         quantity = cart.quantity;
       }
     }
   }
 
-  Future<String?> addCart({required ShopItemModel item}) async {
-    String? errorText;
-    try {
-      List<Map> cartList = [];
-      bool addFlg = true;
-      for (CartModel cart in user?.cartList ?? []) {
-        if (cart.id == item.id) {
-          cart.quantity = quantity;
-          addFlg = false;
-        }
-        cartList.add(cart.toMap());
-      }
-      if (addFlg == true) {
-        cartList.add({
-          'id': item.id,
-          'number': item.number,
-          'name': item.name,
-          'price': item.price,
-          'unit': item.unit,
-          'imageUrl': item.imageUrl,
-          'quantity': quantity,
-        });
-      }
-      userService.update({
-        'id': user?.id,
-        'cartList': cartList,
-      });
-      _user = await userService.select(id: user?.id);
-    } catch (e) {
-      errorText = 'カートの追加に失敗しました。';
+  Future<List<CartModel>> getCart() async {
+    List<CartModel> cartList = [];
+    List<String>? jsonData = await getPrefsList('cartList');
+    if (jsonData != null) {
+      cartList = jsonData.map((e) {
+        return CartModel.fromMap(json.decode(e));
+      }).toList();
     }
-    notifyListeners();
-    return errorText;
+    return cartList;
   }
 
-  Future<String?> clearCart() async {
-    String? errorText;
-    try {
-      userService.update({
-        'id': user?.id,
-        'cartList': [],
-      });
-      _user = await userService.select(id: user?.id);
-    } catch (e) {
-      errorText = 'カートのリセットに失敗しました。';
+  Future addCart({required ShopItemModel item}) async {
+    List<CartModel> cartList = await getCart();
+    bool addFlg = true;
+    for (CartModel cart in cartList) {
+      if (cart.id == item.id) {
+        cart.quantity = quantity;
+        addFlg = false;
+      }
     }
+    if (addFlg == true) {
+      cartList.add(CartModel.fromMap({
+        'id': item.id,
+        'number': item.number,
+        'name': item.name,
+        'price': item.price,
+        'unit': item.unit,
+        'imageUrl': item.imageUrl,
+        'quantity': quantity,
+      }));
+    }
+    List<String> jsonData = cartList.map((e) {
+      return json.encode(e.toMap());
+    }).toList();
+    await setPrefsList('cartList', jsonData);
     notifyListeners();
-    return errorText;
+  }
+
+  Future addCartQuantity({required CartModel cart}) async {
+    List<CartModel> cartList = await getCart();
+    CartModel targetCart = cartList.singleWhere((e) => e.id == cart.id);
+    targetCart.quantity += 1;
+    List<String> jsonData = cartList.map((e) {
+      return json.encode(e.toMap());
+    }).toList();
+    await setPrefsList('cartList', jsonData);
+    notifyListeners();
+  }
+
+  Future removeCartQuantity({required CartModel cart}) async {
+    List<CartModel> cartList = await getCart();
+    CartModel targetCart = cartList.singleWhere((e) => e.id == cart.id);
+    if (targetCart.quantity > 1) {
+      targetCart.quantity -= 1;
+    }
+    List<String> jsonData = cartList.map((e) {
+      return json.encode(e.toMap());
+    }).toList();
+    await setPrefsList('cartList', jsonData);
+    notifyListeners();
+  }
+
+  Future deleteCart({required CartModel cart}) async {
+    List<CartModel> cartList = await getCart();
+    cartList.removeWhere((e) => e.id == cart.id);
+    List<String> jsonData = cartList.map((e) {
+      return json.encode(e.toMap());
+    }).toList();
+    await setPrefsList('cartList', jsonData);
+    notifyListeners();
+  }
+
+  Future clearCart() async {
+    await setPrefsList('cartList', []);
+    notifyListeners();
   }
 }

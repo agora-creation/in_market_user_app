@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ShopOrderService {
-  final String _collection = 'user';
+  final String _collection = 'shop';
   final String _subCollection = 'order';
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
